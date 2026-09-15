@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>乔晓 · AI应用开发工程师</title>
+<meta name="description" content="乔晓 — AI应用开发工程师简历：LangGraph 多 Agent 编排、RAG 全链路、FastAPI 工程化落地。">
+<style>
+:root{
+  --accent:#1d4ed8; --accent-2:#3370ff; --ink:#17233d; --sub:#5a6b87;
+  --line:#e3e9f4; --bg:#f6f8fc; --card:#ffffff; --soft:#eef3ff;
+  --radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg); color:var(--ink); font-size:15px; line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+/* 顶部导航 */
+.nav{
+  position:sticky; top:0; z-index:50; background:rgba(255,255,255,.92);
+  backdrop-filter:saturate(180%) blur(12px); border-bottom:1px solid var(--line);
+}
+.nav-in{
+  max-width:1040px; margin:0 auto; padding:10px 20px;
+  display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+}
+.nav .brand{font-weight:700;letter-spacing:.5px;}
+.nav .links{display:flex;gap:16px;flex-wrap:wrap;margin-left:auto;}
+.nav .links a{color:var(--sub);font-size:14px;}
+.nav .links a:hover{color:var(--accent);text-decoration:none;}
+.btn{
+  border:1px solid var(--accent); color:#fff; background:var(--accent);
+  padding:6px 14px; border-radius:8px; font-size:13.5px; cursor:pointer;
+  transition:.15s; white-space:nowrap;
+}
+.btn:hover{background:#1740b8;}
+.btn.ghost{background:#fff;color:var(--accent);}
+.btn.ghost:hover{background:var(--soft);}
+
+.wrap{max-width:1040px;margin:0 auto;padding:26px 20px 70px;}
+
+/* 头部 */
+.hero{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  padding:30px 30px 26px; position:relative; overflow:hidden;
+}
+.hero::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--accent);}
+.hero h1{font-size:30px;letter-spacing:6px;margin-bottom:4px;}
+.hero .role{color:var(--accent);font-weight:600;font-size:16px;margin-bottom:14px;}
+.meta{display:flex;flex-wrap:wrap;gap:8px 20px;color:var(--sub);font-size:14px;}
+.meta b{color:var(--ink);font-weight:600;}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;}
+.tags span{
+  font-size:13px;color:var(--accent);background:var(--soft);
+  border:1px solid #d6e2ff;border-radius:999px;padding:2px 11px;
+}
+
+/* 区块 */
+section{margin-top:30px;}
+.sec-h{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.sec-h::before{content:"";width:6px;height:18px;border-radius:2px;background:var(--accent);}
+.sec-h h2{font-size:19px;letter-spacing:1px;}
+.sec-h .hint{color:var(--sub);font-size:13px;margin-left:auto;}
+
+.card{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  padding:20px 22px; margin-bottom:14px;
+}
+.card-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;}
+.card-head .t{font-size:16.5px;font-weight:700;}
+.card-head .r{color:var(--accent);font-size:13.5px;font-weight:600;}
+.card-head .d{color:var(--sub);font-size:13.5px;margin-left:auto;white-space:nowrap;}
+.block-t{font-weight:700;font-size:14px;margin:12px 0 4px;}
+.block-t:first-child{margin-top:0;}
+.desc{color:var(--sub);font-size:14.5px;text-align:justify;}
+.desc b{color:var(--ink);}
+ul{list-style:none;}
+li{position:relative;padding-left:16px;margin-bottom:5px;font-size:14.5px;text-align:justify;}
+li::before{content:"";position:absolute;left:2px;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.75;}
+ul.num{counter-reset:n;}
+ul.num li::before{content:counter(n);counter-increment:n;background:none;color:var(--accent);font-size:12px;font-weight:700;left:0;top:0;width:auto;height:auto;opacity:1;}
+ul.num li{padding-left:20px;}
+
+/* 技能 */
+.grid{display:grid;grid-template-columns:1fr;gap:14px;}
+.skill-group .g-t{font-weight:700;color:var(--accent);font-size:14.5px;margin-bottom:6px;}
+.skill-group li{margin-bottom:4px;}
+
+/* 教育 */
+.edu{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;}
+.edu .s{font-weight:700;font-size:16px;}
+.edu .m{color:var(--sub);}
+.edu .d{color:var(--sub);margin-left:auto;}
+
+footer{max-width:1040px;margin:0 auto;padding:0 20px 50px;color:var(--sub);font-size:13px;text-align:center;}
+
+/* 滚动渐入 */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+}
+
+/* 打印 / 导出 PDF */
+@media print{
+  @page{size:A4;margin:12mm 13mm;}
+  body{background:#fff;font-size:10.2pt;line-height:1.5;}
+  .nav,.no-print{display:none !important;}
+  .wrap{max-width:none;padding:0;}
+  .hero{border:none;padding:0 0 8px;border-bottom:2px solid #17233d;border-radius:0;}
+  .hero::before{display:none;}
+  .hero h1{font-size:20pt;letter-spacing:4px;}
+  .card{border:none;border-radius:0;padding:0;margin-bottom:10px;}
+  section{margin-top:12px;}
+  .card,.skill-group{page-break-inside:avoid;}
+  #about{page-break-before:always;break-before:page;}
+  a{color:#17233d;text-decoration:none;}
+}
+@media (max-width:640px){
+  .hero{padding:22px 18px;}
+  .hero h1{font-size:24px;letter-spacing:4px;}
+  .card{padding:16px;}
+  .card-head .d{margin-left:0;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <span class="brand">乔晓</span>
+    <div class="links">
+      <a href="#skills">专业技能</a>
+      <a href="#work">工作经历</a>
+      <a href="#projects">项目经历</a>
+      <a href="#about">个人概述</a>
+    </div>
+    <button class="btn no-print" onclick="window.print()">导出 PDF</button>
+    <button class="btn ghost no-print" onclick="exportMarkdown()">导出 MD</button>
+    <button class="btn ghost no-print" onclick="copyMarkdown(this)">复制 MD</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header class="hero">
+    <h1>乔 晓</h1>
+    <div class="role">求职意向：AI应用开发工程师 / Python后端（AI方向）</div>
+    <div class="meta">
+      <span><b>电话</b> 13256626645</span>
+      <span><b>邮箱</b> <a href="mailto:3078782713@qq.com">3078782713@qq.com</a></span>
+      <span><b>GitHub</b> <a href="https://github.com/OOP101" target="_blank" rel="noopener">github.com/OOP101</a></span>
+      <span><b>base</b> 陕西西安</span>
+      <span><b>状态</b> 离职，一周内到岗</span>
+    </div>
+    <div class="tags">
+      <span>LangGraph / StateGraph</span><span>Multi-Agent 编排</span><span>RAG 全链路</span>
+      <span>FastAPI + SSE</span><span>ChromaDB</span><span>Docker Compose</span>
+    </div>
+  </header>
+
+  <section id="skills">
+    <div class="sec-h"><h2>专业技能</h2></div>
+    <div class="grid">
+      <div class="card skill-group">
+        <div class="g-t">大模型 &amp; Agent 开发</div>
+        <ul>
+          <li>熟悉 LangChain / LangGraph，具备 StateGraph 工作流、意图路由、条件跳转、Function Calling、多 Agent 编排实战经验；掌握节点级异常兜底与默认值降级、结构化输出容错解析、会话记忆分桶与上下文裁剪等 Agent 工程化能力。</li>
+          <li>熟悉大模型接入与调度：DeepSeek、Qwen、Moonshot、GLM、混元、小米 MiMo 等，封装 OpenAI 兼容接口与多服务商注册表，支持运行时热切换、多级降级与配置持久化重启恢复。</li>
+          <li>熟练 Prompt 工程、结构化输出约束与 JSON 容错解析；了解 MCP 协议与自定义工具集开发（规划接入）。</li>
+          <li>理解 Transformer / Attention 机制与 LLaMA、ChatGLM 系列推理流程，了解 LoRA 微调原理；实际项目以 Prompt 工程与 RAG / Agent 工程化落地为主。</li>
+        </ul>
+      </div>
+      <div class="card skill-group">
+        <div class="g-t">RAG &amp; 检索增强、知识工程</div>
+        <ul>
+          <li>熟悉 RAG 全链路落地：多格式文档解析（PyMuPDF / python-docx）、中文标点感知语义切片、Embedding 向量化入库、知识库增量 / 全量更新与分片级定向重建（chunk_hash 指纹复用）。</li>
+          <li>熟悉混合检索与重排序：BM25 稀疏召回 + 向量语义召回双路并行、RRF 融合排序、可插拔 Reranker（本地规则 / 在线模型 / BGE 本地）三档，失败自动降级；检索结果保留来源与相似度得分支持问答溯源。</li>
+          <li>熟练使用 ChromaDB（多 collection 与 kb_id 隔离、doc_type 过滤、余弦相似度），了解 HNSW / IVF 索引原理；了解 Milvus、PgVector 使用场景。</li>
+          <li>掌握文本预处理与知识治理：jieba 分词、持久化术语库与 Prompt 注入、PII 脱敏、无 Key 场景规则引擎兜底。</li>
+        </ul>
+      </div>
+      <div class="card skill-group">
+        <div class="g-t">后端 &amp; 工程开发</div>
+        <ul>
+          <li>熟练 Python；熟练 FastAPI 服务开发：SSE 流式输出、asyncio 异步并发、线程池隔离、RESTful API 设计与 Pydantic 数据校验。</li>
+          <li>熟悉 SQLAlchemy 异步 ORM 与 SQLite / MySQL，JWT（PBKDF2 + HS256）鉴权与多角色权限控制；了解 PostgreSQL、Java 基础语法。</li>
+          <li>并发与一致性治理：异步阻塞定位与修复、请求级实例隔离、原子写（临时文件 + rename）与互斥锁、E2E 并发回归验证。</li>
+          <li>NumPy、Pandas、Matplotlib 数据处理分析，掌握 Scikit-learn 常用机器学习算法。</li>
+        </ul>
+      </div>
+      <div class="card skill-group">
+        <div class="g-t">AI 应用平台 &amp; 内容生产工作流</div>
+        <ul>
+          <li>熟悉 Coze、Dify 等无代码 / 低代码 AI 应用平台：智能体搭建、工作流（Workflow）节点编排、知识库接入、插件与工具调用、变量与条件分支设计、多平台发布与在线调试。</li>
+          <li>具备 AI 内容生产工作流落地经验：搭建「选题 → 脚本/文案生成 → 配图与配音 → 成片 / 图文排版 → 发布」自动化流水线，把内容生产从人工逐环节操作收敛为可复用的工作流模板。</li>
+          <li>熟悉图文与短视频场景的 Prompt 设计：分镜脚本生成、多版本文案批量产出、AI 生图 / 生视频工具选型与调用、素材批量处理与统一风格化。</li>
+          <li>了解 Coze / Dify 与自建服务的协同方式：平台侧负责流程编排与快速验证，复杂逻辑通过 API / 插件回落到自研 FastAPI 服务，兼顾交付速度与可扩展性。</li>
+        </ul>
+      </div>
+      <div class="card skill-group">
+        <div class="g-t">工程化 &amp; 运维</div>
+        <ul>
+          <li>模型服务降级与容灾体系：LLM 不可用降模板输出、向量检索降关键词、外部数据源降 Mock，保证依赖缺失下功能链路不断。</li>
+          <li>可观测性建设：Token 用量统计接入真实 usage、接口监控、结构化 JSON 日志与链路追踪。</li>
+          <li>Docker Compose 编排与 Windows / POSIX 跨平台一键启动器；Nginx 反向代理配置。</li>
+          <li>熟练使用 Cursor、Claude Code、Codex、WorkBuddy 等 AI 辅助开发工具，用于编码、调试、问题排查与代码重构。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="sec-h"><h2>工作经历</h2></div>
+    <div class="card">
+      <div class="card-head">
+        <span class="t">西安领铄智能科技有限公司</span>
+        <span class="r">大模型智能体研发工程师</span>
+        <span class="d">2025/08 – 2026/08</span>
+      </div>
+      <ul>
+        <li><b>需求分析与方案设计：</b>对接业务部门（知识管理、行政差旅、外贸运营）的 AI 化需求，参与需求评审，负责将业务诉求拆解为 LLM 应用技术方案与接口设计文档，评审通过后进入开发排期。</li>
+        <li><b>核心模块研发与迭代交付：</b>按迭代计划完成智能问答、知识检索、流程自动化等模块的编码、自测与联调，参与团队代码评审，保障版本按期交付。</li>
+        <li><b>研发规范建设：</b>制定 AI 应用开发约定（Prompt 版本管理、LLM 接入统一封装、异常降级策略、日志埋点规范），沉淀可复用的 RAG / Agent 组件库，降低多项目重复开发成本。</li>
+        <li><b>测试与质量保障：</b>搭建单元测试与端到端验证用例，参与灰度发布与上线验证；针对线上问题输出复盘文档，并推动对应回归用例固化。</li>
+        <li><b>线上运维与故障响应：</b>负责所辖服务的告警响应与故障定位，处理异步阻塞、并发冲突、流式输出异常等生产问题，保障服务可用性。</li>
+        <li><b>技术沉淀与分享：</b>组织内部大模型应用技术分享（RAG 检索优化、Agent 工作流设计方向），协助新成员上手项目。</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="t">西安辛瑞灵曜人工智能有限公司</span>
+        <span class="r">AI 应用开发实习生</span>
+        <span class="d">2025/03 – 2025/06</span>
+      </div>
+      <ul>
+        <li><b>智能体应用开发：</b>参与 AI 智能体应用开发，基于 LangChain 实现任务规划与工具调用链路，完成意图识别、知识检索、结果生成等模块的编码与联调。</li>
+        <li><b>RAG 知识库搭建：</b>参与 RAG 知识库建设，实现文档解析、文本分块、Embedding 入库与语义检索，支撑智能体在多场景下的知识问答能力。</li>
+        <li><b>服务接口开发：</b>基于 FastAPI 开发 RESTful 接口，完成智能体服务与业务系统的对接，处理 JSON 数据交互与异常返回。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="sec-h"><h2>项目经历</h2><span class="hint">按时间倒序</span></div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="t">直播带货 AI 话术助手</span>
+        <span class="r">独立开发（课程实践项目）</span>
+        <span class="d">2026/08 – 2026/09</span>
+      </div>
+      <div class="block-t">项目背景</div>
+      <p class="desc">直播带货场景下弹幕信息量大、节奏快，主播需同时兼顾商品讲解、互动与促销引导，难以实时捕捉购买意向、价格疑虑、竞品对比等关键信号。本系统以 LangGraph 状态机编排多步 Agent 工作流，将弹幕经意图识别后按类型路由至 RAG 检索，结合商品知识与历史话术生成可直接口播的推荐话术与执行策略，并通过 WebSocket 实时推送至前端。</p>
+      <div class="block-t">技术架构</div>
+      <p class="desc">Python + FastAPI + LangGraph StateGraph + LangChain + RAG（ChromaDB 向量检索 + doc_type 过滤）+ SQLAlchemy 异步 / SQLite + WebSocket + Vue3 + TypeScript + Pinia + Element Plus + ECharts</p>
+      <div class="block-t">主要职责</div>
+      <ul>
+        <li>设计并实现 LangGraph StateGraph 六节点工作流（预处理 → 意图识别 → RAG 检索 → 话术生成 → 策略推荐 → 结果整合），以 TypedDict 定义跨节点共享状态，统一承载意图、情感、检索来源、话术与策略字段。</li>
+        <li>构建弹幕意图识别链路：以结构化输出约束 LLM 返回意图类型、置信度、情感倾向与关键词，覆盖购买意向、产品疑问、价格疑虑、负面情绪、互动闲聊等 6 类意图。</li>
+        <li>搭建 ChromaDB 向量检索链路：商品知识与话术模板两类文档经 embedding 入库，元数据标记 doc_type 以支持过滤检索，采用余弦相似度、top_k=5。</li>
+        <li>实现按意图路由的检索策略并设计兜底：产品疑问类走商品知识库、购买意向与价格疑虑类走话术库，命中不足时回落全库检索，避免答非所问。</li>
+        <li>基于 FastAPI 提供 HTTP + WebSocket 双通道：弹幕经 WS 端点接入后触发 Agent 处理，连接管理器统一广播分析结果，支持前端多端订阅。</li>
+        <li>设计话术生成与策略模板：Prompt 约束口语化表达与 50~150 字长度、返回 script/strategy/urgency 结构化结果；5 类意图分别映射优先级与执行动作（购买意向→立即引导下单，负面情绪→安抚与补偿方案）。</li>
+        <li>建模 SQLite 数据层：商品、弹幕记录、话术库、分析结果、直播会话、知识库文档 6 张表，使用 SQLAlchemy 异步会话持久化弹幕与分析结果。</li>
+        <li>前端基于 Vue3 + TypeScript 实现：Pinia 状态管理、WebSocket 客户端接入、ECharts 呈现弹幕趋势与意图分布。</li>
+      </ul>
+      <div class="block-t">项目难点 · 解法 · 结果</div>
+      <ul class="num">
+        <li><b>难点：</b>大模型输出 JSON 不稳定，单节点失败会打断整条链路——LLM 返回直接解析，格式漂移即抛异常。<b>解法：</b>提取首个 <code>{</code> 至末个 <code>}</code> 的容错解析，失败回退纯文本话术，每个节点配独立异常兜底与默认值。<b>结果：</b>任一节点异常均不中断整条工作流，仍向下游返回可用结果并记录错误。</li>
+        <li><b>难点：</b>意图类型与检索范围错配，话术答非所问——初版全库检索，价格类弹幕常命中产品参数文档，生成话术像念产品手册。<b>解法：</b>按意图做 doc_type 过滤路由（产品疑问 → product、购买/价格 → script），命中不足 2 条时回落全库检索。<b>结果：</b>不同类型弹幕各取所需知识，话术与场景匹配度明显提升。</li>
+        <li><b>难点：</b>直播实时性要求与多节点串行链路的矛盾——单条弹幕需串行经过 6 个节点（含 2 次 LLM 调用），链路长、延迟叠加。<b>解法：</b>批处理参数控制节奏（BATCH_SIZE=10、ANALYSIS_INTERVAL=5）、WebSocket 单次广播替代逐端请求、低置信度（&lt;0.6）弹幕降优先级避免无效生成。<b>结果：</b>端到端延迟控制在秒级（设计目标 &lt; 2s）。</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="t">企业智能知识中枢（RAG 底座）</span>
+        <span class="r">RAG 应用开发工程师</span>
+        <span class="d">2026/05 – 2026/09（至今）</span>
+      </div>
+      <div class="block-t">项目介绍</div>
+      <p class="desc">企业内部 SOP、技术文档、规章制度往往散落在共享盘、群文件与个人电脑中，新人上手只能依赖老员工口头带教，同一问题反复问、答案还不一致；而通用大模型直接提问容易出现幻觉、答不出处，制度类内容一旦答错就是合规风险。本项目将分散的企业知识统一归集为可自然语言检索的问答服务，构建「文档解析入库 → 混合检索召回 → 融合精排 → 大模型生成带来源答案」的完整链路，员工提问即可拿到引用原文的标准答案，支持多轮追问与跨文档检索；同时提供文档上传与知识库管理后台、按知识库隔离的权限控制，是面向企业内部的知识问答基础设施，可直接复用到客服知识库、研发文档问答等场景。</p>
+      <div class="block-t">技术架构</div>
+      <p class="desc">Python + LangChain + LangGraph + FastAPI + ChromaDB + LLMManager 多模型兼容层 + jieba 分词 + BM25 稀疏检索 + RRF 融合 + PyMuPDF/python-docx 自研解析器 + 中文标点感知文本分割 + SSE 流式输出 + Docker Compose</p>
+      <div class="block-t">主要职责</div>
+      <ul class="num">
+        <li>自研多格式文档解析器，支持 PDF、Word、Markdown 等格式自动加载与中文标点感知智能切片，经向量化后高效入库；基于 doc_id 实现文档定向重建与分片级增量更新（chunk_hash 指纹复用未变分片），新 SOP 上传后分钟级生效，避免全库重灌。</li>
+        <li>自研 HybridRetriever 混合检索器，协同调度 Chroma 向量召回与 BM25 稀疏召回，经 RRF 融合排序后接入可插拔精排器二次重排，精准解决专业术语场景下纯语义检索命中不稳的难题。</li>
+        <li>基于自研会话记忆组件按 session_id 分桶保存最近 N 轮对话历史，检索时拼接上下文交由 LLM 生成答案，有效支持指代消解与多轮追问；按轮数动态裁剪上下文窗口，抑制长会话下的记忆膨胀。</li>
+        <li>封装 LLMManager 多服务商注册表（DeepSeek/Qwen/OpenAI/Moonshot），运行时切换模型业务代码零改动，配置持久化重启自动恢复。</li>
+        <li>搭建 FastAPI 服务层，封装知识问答、文档上传、知识库管理等 RESTful 接口，对话接口 SSE 流式输出前端逐字渲染；按 kb_id 实现多知识库隔离与权限控制。</li>
+        <li>基于 LangGraph 构建 StateGraph 有状态工作流：classify（规则+LLM 意图分类）→ route（条件路由）→ knowledge/action/list 节点 → memory_writer → END，注册知识库查询 / 流程发起 / 流程列举三类工具，实现"查完即办"闭环。</li>
+      </ul>
+      <div class="block-t">项目难点</div>
+      <ul class="num">
+        <li>SOP/制度类文档专业术语、缩写密集，纯语义检索命中不稳：Dense+BM25 双路召回经 RRF 融合（K=60），再接可插拔 Reranker 三档（本地规则/Qwen 在线/BGE 本地），失败自动回退本地规则。</li>
+        <li>SOP/制度高频更新，检索索引全量重建成本高：按分片内容指纹（chunk_hash）做增量，同一文档只增删变更分片、复用未变分片，改版 SOP 分钟级生效。</li>
+        <li>长会话记忆膨胀与 Token 成本失控：按 session_id 分桶保存最近 N 轮 + 按轮数裁剪窗口，超 Token 预算自动触发上下文压缩；无 API Key 时自动切换 DemoLLM 与规则引擎兜底，全链路离线可验证。</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="t">企业智慧出行（Corporate Journey Hub）</span>
+        <span class="r">Agent 应用开发工程师</span>
+        <span class="d">2026/01 – 2026/05</span>
+      </div>
+      <div class="block-t">项目背景</div>
+      <p class="desc">针对企业差旅安排分散在邮件、IM、Excel 中，人工规划效率低、差旅合规难管控、行程变更响应慢等问题，设计并开发基于大模型多智能体协作的企业差旅管理平台。系统由三个 FastAPI 微服务（Agent 编排中心、行程规划引擎、实时感知引擎）组成，通过 LangGraph 意图路由实现多 Agent 动态分发，结合 RAG 差旅政策知识库、SSE 流式行程生成、多源实时数据监控与审批自动流转，覆盖企业差旅「行前规划 → 行中保障 → 行后归档」全链路。</p>
+      <div class="block-t">技术架构</div>
+      <p class="desc">Python + FastAPI（三服务微服务架构）+ LangGraph StateGraph + React 19 + APScheduler 定时轮询 + 可插拔 Embedding 三后端 + SSE 流式输出 + Prometheus 指标 + 结构化 JSON 日志与链路追踪</p>
+      <div class="block-t">主要职责</div>
+      <ul>
+        <li>搭建平台整体微服务架构：编排 / 规划 / 感知三层 FastAPI 服务 + shared 公共复用层 + React 19 前端，基于 LangGraph StateGraph 构建意图路由工作流（规划 / 问答 / 管理 / 应急四类意图），存储、鉴权、LLM 管理等平台能力下沉公共层实现零重复代码。</li>
+        <li>设计并开发行程规划 Agent：两阶段生成流程——大模型参数提取（目的地 / 日期 / 人数 / 预算）+ 按规划规则生成多日结构化行程 JSON（含交通、住宿、会议、餐饮、清单与预算），SSE 逐 token 流式输出，支持混元 / DeepSeek / GLM 多模型热切换全链路透传。</li>
+        <li>构建差旅政策 RAG 知识库：实现可插拔 Embedding 三后端（本地 bge-large-zh 私有化 / OpenAI 兼容 API / 关键词降级），失败熔断自动降级；检索结果保留原文 excerpt 与相似度 score 供大模型引用作答，满足差旅合规可解释性要求。</li>
+        <li>开发实时感知引擎：基于 APScheduler 定时轮询订阅任务（航班动态 / 天气预警 / 路况拥堵 / 景点状态），对接多源外部 API 并内置 Mock 降级体系，异常按严重度分级生成提醒并推送，保障行程变更 60 秒内触达。</li>
+        <li>打通企业化管控链路：行程生成后自动匹配职级差旅政策、检查超标项并发起审批，实现审批门禁闭环（行程待主管审批不可调整，审批通过行程才生效，拒绝则作废），覆盖组织架构、差旅政策、审批流转全流程。</li>
+        <li>主导系统稳定性与性能治理：定位并修复 async 路由同步执行 LLM 调用阻塞事件循环导致整服务卡死的问题（线程池化）、生成器全局单例并发串单问题（每请求独立实例）、LLM 异常文本污染流式行程 JSON 问题（独立 error 帧协议 + chat_json 保护重试）、JSON 存储非原子写问题（temp + rename 原子写 + 线程锁）；问答首字响应优化至 1.3 秒。</li>
+        <li>完善安全与数据治理：收窄鉴权后门（dev 万能 key 仅开发环境生效）、补齐行程属主校验防越权访问（IDOR）、修复相对数据路径按服务工作目录解析导致的数据孤岛问题并完成存量数据迁移合并。</li>
+        <li>推进工程化建设：将 1200 行单体路由文件按领域拆分为 7 个 APIRouter 模块，编写六项端到端自动化验证（生成 / 越权 / 阻塞 / 并发 / 政策审批链路 / 流式）与幂等种子数据脚本，全链路接入 Prometheus 指标、结构化 JSON 日志与链路追踪。</li>
+      </ul>
+      <div class="block-t">项目难点</div>
+      <ul>
+        <li>大模型生成多日行程耗时长（数十秒），且早期 async 路由中同步调用 LLM 会阻塞整个事件循环，单请求即可卡死全部服务。通过流式协议改造（逐 token 透传 + 独立错误帧）与线程池化，实现问答首字 1.3 秒、行程生成全程可感知，服务在长耗时请求期间保持健康响应。</li>
+        <li>多用户并发使用时存在一致性问题：全局生成器单例被并发请求互相覆盖模型配置、共享解析结果导致"串单"；JSON 文件存储并发写入易损坏。通过请求级实例隔离与原子写（临时文件 + 原子替换 + 互斥锁）解决，并写入 E2E 并发回归验证。</li>
+        <li>企业内无外部数据源 API Key 时需保证系统完整可用与可演示：设计全链路降级体系（LLM 不可用走模板行程、向量检索降级关键词、四类感知数据源降级 Mock），任何依赖缺失下功能链路不断、仅数据降级。</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="t">跨境电商一站式 AI 运营平台</span>
+        <span class="r">RAG&amp;Agent 应用开发工程师</span>
+        <span class="d">2025/08 – 2025/12</span>
+      </div>
+      <div class="block-t">项目背景</div>
+      <p class="desc">针对外贸企业多语言沟通成本高、营销文案制作依赖资深业务员、客户咨询响应慢、企业知识难以沉淀等问题，设计并开发基于 DeepSeek 大模型 + RAG + Agent 的一站式外贸智能服务平台。系统通过 RAG 检索增强生成实现可溯源的企业知识问答客服，通过持久化术语库与翻译记忆保证 30+ 语种译法一致性，覆盖智能客服、多语言翻译、智能文案生成、知识库管理、数据洞察与管理后台六大模块，帮助外贸企业"单人驾驭多语言交流"，降低对外贸业务员岗位的依赖。</p>
+      <div class="block-t">技术架构</div>
+      <p class="desc">Python + FastAPI（四层架构 + 六大模块 REST API）+ DeepSeek 大模型 + RAG（向量 + BM25 + RRF + 可插拔 Reranker）+ 可插拔 LLM / Embedding / 向量库抽象层（工厂模式）+ SSE 流式输出 + PBKDF2/HS256 JWT 鉴权 + SQLite + Docker 编排与跨平台一键启动器</p>
+      <div class="block-t">主要职责</div>
+      <ul>
+        <li>设计并实现平台整体架构，采用交互层 / 编排层 / RAG 检索层 / 数据模型层四层架构，基于 FastAPI 完成六大模块 REST API；设计 LLM / Embedding / 向量库可插拔抽象层（工厂模式），默认 Mock 实现保证无 API Key 即可跑通全链路，修改配置即可无缝切换 DeepSeek、通义千问等真实模型。</li>
+        <li>构建外贸领域 RAG 知识库，设计文档处理流程，实现 PDF、DOCX、TXT、CSV、Markdown 等资料解析、文本清洗（含 PII 脱敏）、语义分块、Embedding 生成和知识入库；结合向量检索 + BM25 关键词检索 + RRF 融合排序 + 可插拔重排序构建 Hybrid Retrieval 混合检索体系，回答支持知识溯源。</li>
+        <li>主导 RAG 检索性能优化，BM25 索引按语料指纹缓存（文档增删自动失效重建）、向量库归一化矩阵缓存，消除每次查询的全量重建开销；文档按 doc_id 精确增删、同名自动替换，保证知识库一致性。</li>
+        <li>开发智能客服 Agent，实现规则意图识别（订单 / 售后 / 产品 / 翻译）、高风险问题自动转人工、多轮上下文管理；实现 SSE 流式输出接口与前端打字机渲染，大幅降低长回答等待感。</li>
+        <li>开发多语言翻译引擎，设计持久化术语库（FOB/CIF/LC 等外贸术语）注入 Prompt 保证专业译法跨语言一致；实现「进程内 LRU + SQLite 持久化」两级翻译记忆缓存，跨重启命中，重复文本零模型调用成本。</li>
+        <li>开发智能文案生成模块，支持商品标题、详情描述、投放广告语、SEO 标签一键生成；基于 asyncio.gather + 异步 LLM 调用实现多段文案并发生成，生成延迟从四段串行之和降为最慢一段。</li>
+        <li>设计鉴权与安全体系，基于 PBKDF2 + HS256 JWT 实现零第三方依赖认证，多角色权限控制（注册防自助提权、管理员专用角色授予接口）、CORS 白名单自适应。</li>
+        <li>建立可观测性与工程化体系，Token 用量接入 LLM 真实 usage 支撑成本看板；编写 20 项冒烟 + 单元测试；实现 Docker 编排与 Windows/POSIX 跨平台一键启动器。</li>
+      </ul>
+      <div class="block-t">项目难点</div>
+      <ul>
+        <li>单一大模型服务需同时支撑智能问答、文案生成、实时翻译等多个场景，文案"一键生成"需串行调用 4 次 LLM 导致延迟叠加。通过 asyncio.gather 并发生成 + SSE 流式推送解决，多段生成延迟从串行之和降为最慢单段，客服场景实现逐字输出。</li>
+        <li>外贸场景专业术语密集（FOB、CIF、L/C、MOQ 等），同一术语多语言译法不一致会直接影响合同与沟通准确性；传统关键词检索也容易遗漏语义相关知识。通过数据库持久化术语库注入 Prompt 强约束译法 + 向量/BM25 双路检索 RRF 融合解决，答案附带知识来源可溯源。</li>
+        <li>知识库文档增删频繁，检索索引（BM25 统计量、向量矩阵）若每次查询全量重建，随知识库增长问答延迟将持续劣化。通过语料指纹缓存 + 增删失效重建、向量归一化矩阵惰性缓存解决，检索热路径无全量重建开销。</li>
+        <li>大模型存在幻觉风险，商业客服场景不能给出无依据回答；同时高风险问题（投诉、退款、法律）不宜由 AI 处理。通过 RAG 溯源 + 关键词规则识别自动转人工兜底解决。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="sec-h"><h2>个人概述</h2></div>
+    <div class="card">
+      <div class="edu">
+        <span class="s">烟台科技学院</span>
+        <span class="m">软件工程 · 统招本科</span>
+        <span class="d">2021/09 – 2025/06</span>
+      </div>
+      <p class="desc" style="margin-top:6px"><b>主修课程：</b>Java 程序设计、面向对象编程、C 语言程序设计、数据结构、算法设计与分析、计算机组成原理、操作系统、计算机网络、数据库系统原理、软件工程基础、UML 统一建模、软件项目管理、Web 前端开发、Linux 系统应用、Python 开发、人工智能导论</p>
+      <ul style="margin-top:12px;padding-top:12px;border-top:1px solid var(--line)">
+        <li><b>AI 工程化落地：</b>具备 RAG 全链路开发，以及单 Agent 实现、Agent 编排、多意图工作流编排的实战能力，依托真实代码支撑，将 AI 能力转化为可运行、可评测、可降级的可落地产品。</li>
+        <li><b>架构实践沉淀：</b>具备服务降级、故障转移的工程实践，完成多模型兼容适配；主导解决过异步阻塞、并发串单、流式输出异常、非原子写等生产级问题，方案设计与实现并重。</li>
+        <li><b>问题调优能力：</b>紧跟大模型前沿方向，基于数据驱动、可复现实验开展效果迭代与性能优化，能够在项目周期内交付高质量可验证代码。</li>
+        <li><b>业务闭环思维：</b>以解决业务痛点为核心，具备需求拆解到功能落地的完整闭环经验，利用 AI 能力实现业务层面效能提升。</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  乔晓 · AI 应用开发工程师 · 陕西西安 · <a href="https://github.com/OOP101" target="_blank" rel="noopener">github.com/OOP101</a>
+</footer>
+
+<script>
+/* ---------- 导出 Markdown：从页面 DOM 反向生成，保证与展示内容一致 ---------- */
+function buildMarkdown(){
+  var out = [];
+  function clean(s){ return (s || '').replace(/\s+/g, ' ').trim(); }
+  function pushKV(k, v){ if (v) out.push('-   **' + k + '**：' + v); }
+  function pushBlock(label, txt){ if (txt) out.push('**' + label + '**：' + txt); }
+  function pushList(ul, ordered){
+    var lis = ul.querySelectorAll(':scope > li');
+    for (var i = 0; i < lis.length; i++){
+      var txt = clean(lis[i].textContent);
+      if (!txt) continue;
+      if (ordered && ul.classList.contains('num')) out.push((i + 1) + '\\. ' + txt);
+      else out.push('-   ' + txt);
+    }
+    out.push('');
+  }
+  function after(el, cls){
+    var n = el.nextElementSibling;
+    while (n && n.nodeType === 1){
+      if (n.classList.contains('block-t')) return n;
+      if (n.classList.contains(cls)) return n;
+      n = n.nextElementSibling;
+    }
+    return null;
+  }
+  function selfPlusDesc(container, sel){
+    var arr = Array.prototype.slice.call(container.querySelectorAll(sel));
+    if (container.matches && container.matches(sel)) arr.unshift(container);
+    return arr;
+  }
+  function walk(container){
+    var sec = container.closest('section');
+    var id = sec ? sec.id : '';
+    if (id === 'skills'){
+      selfPlusDesc(container, '.skill-group').forEach(function(g){
+        var gt = g.querySelector('.g-t');
+        if (gt){ out.push('### ' + clean(gt.textContent)); out.push(''); }
+        var ul = g.querySelector('ul');
+        if (ul) pushList(ul, false);
+      });
+    } else if (id === 'work' || id === 'projects'){
+      selfPlusDesc(container, '.card-head').forEach(function(h){
+        var t = clean(h.querySelector('.t').textContent);
+        var r = h.querySelector('.r'), d = h.querySelector('.d');
+        out.push('### ' + t + (r ? ' | ' + clean(r.textContent) : ''));
+        out.push('');
+        if (d) out.push('_' + clean(d.textContent) + '_');
+        out.push('');
+        var body = h.parentElement;
+        var next = h.nextElementSibling;
+        while (next && !next.classList.contains('card-head')){
+          if (next.classList.contains('block-t')){
+            var label = clean(next.textContent);
+            var n2 = next.nextElementSibling;
+            if (n2 && n2.tagName === 'P'){ pushBlock(label, clean(n2.textContent)); out.push(''); next = n2; }
+            else out.push('**' + label + '**');
+            out.push('');
+          } else if (next.tagName === 'UL'){
+            pushList(next, true);
+          }
+          next = next.nextElementSibling;
+        }
+        out.push('');
+      });
+    } else if (id === 'about'){
+      var edu = container.querySelector('.edu');
+      if (edu){
+        var s = edu.querySelector('.s'), m = edu.querySelector('.m'), d2 = edu.querySelector('.d');
+        out.push('### ' + clean(s.textContent) + ' | ' + (m ? clean(m.textContent) : ''));
+        out.push('');
+        if (d2) out.push('_' + clean(d2.textContent) + '_');
+        out.push('');
+      }
+      var ps = container.querySelectorAll('p.desc');
+      if (ps.length) pushBlock('主修课程', clean(ps[0].textContent).replace(/^主修课程：/, ''));
+      out.push('');
+      var ul = container.querySelector('ul');
+      if (ul){
+        out.push('### 自我评价');
+        out.push('');
+        pushList(ul, false);
+      }
+    }
+  }
+
+  // 抬头
+  var hero = document.querySelector('.hero');
+  out.push('# 乔晓 · 求职意向：AI应用开发工程师 / Python后端（AI方向）');
+  out.push('');
+  var role = clean(hero.querySelector('.role').textContent).replace(/^求职意向：/, '');
+  out.push('### 乔晓 | ' + role);
+  out.push('');
+  hero.querySelectorAll('.meta span').forEach(function(sp){
+    var b = sp.querySelector('b'), t = clean(sp.textContent);
+    var k = b ? clean(b.textContent) : '';
+    var v = k ? t.replace(k, '').trim() : t;
+    pushKV(k, v);
+  });
+  var tags = Array.prototype.map.call(hero.querySelectorAll('.tags span'), function(s){ return clean(s.textContent); }).join('、');
+  if (tags) out.push('-   **技术标签**：' + tags);
+  out.push('');
+
+  document.querySelectorAll('.wrap section').forEach(function(sec){
+    var h2 = sec.querySelector('.sec-h h2');
+    if (!h2) return;
+    out.push('## ' + clean(h2.textContent));
+    out.push('');
+    sec.querySelectorAll('.card').forEach(walk);
+  });
+
+  var md = out.join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
+  return md;
+}
+
+function exportMarkdown(){
+  var md = buildMarkdown();
+  var name = '乔晓-AI应用开发工程师-在线简历.md';
+  // 用 Data URI 触发下载：避免 Edge 把 blob: 链接当作"需要应用打开"处理
+  var uri = 'data:text/markdown;charset=utf-8,' + encodeURIComponent('\ufeff' + md);
+  var a = document.createElement('a');
+  a.href = uri;
+  a.download = name;
+  a.rel = 'noopener';
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function(){ a.remove(); }, 1000);
+}
+
+function copyMarkdown(btn){
+  var md = buildMarkdown();
+  var done = function(){ flash(btn, '已复制'); };
+  var fail = function(){
+    // 剪贴板 API 不可用（如直接 file:// 打开）时回退用 textarea + execCommand
+    var ta = document.createElement('textarea');
+    ta.value = md;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); }
+    catch(e){ flash(btn, '复制失败'); }
+    ta.remove();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(md).then(done).catch(fail);
+  } else { fail(); }
+}
+
+function flash(btn, text){
+  var old = btn.textContent;
+  btn.textContent = text;
+  btn.disabled = true;
+  setTimeout(function(){ btn.textContent = old; btn.disabled = false; }, 1600);
+}
+</script>
+
+</body>
+</html>
